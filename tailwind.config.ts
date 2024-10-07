@@ -9,8 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        backgroundImage: {
+          'hero-pattern': "url('/img/hero-pattern.svg')",
+          'footer-texture': "url('/img/footer-texture.png')",
+        }
       },
     },
   },

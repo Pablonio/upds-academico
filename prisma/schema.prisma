@@ -49,6 +49,8 @@ model Usuario {
   nombre String
   apellidos String
   ci String
+  correo String
+  contrasena String
   fechaNacimiento DateTime
   rol String  @default("ESTUDIANTE")
   //Un usuario puede tener varias profesiones
@@ -59,6 +61,9 @@ model Usuario {
   semestre Semestre[]
   //Un usuario puede tener varias materias
   materia Materia[]
+  //Relacion con Aula
+  idAula Int? 
+  aula Aula? @relation(fields: [idAula], references: [id])
 
 }
 
@@ -77,6 +82,8 @@ model Materia{
   //Datos
   codigoMateria String @unique
   nombre String @unique
+  horaInMateria String
+  horaSalidaMateria String
   //Una materia puede requerir varias materias requeridas
   materiasRequeridas MateriasRequeridas[]
   //Relacion con Usuario
@@ -85,4 +92,24 @@ model Materia{
   //Relacion con Semestre
   idSemestre Int?
   semestre Semestre? @relation(fields: [idSemestre], references: [id])
+  //Relacion con Aula
+  idAula Int? 
+  aula Aula? @relation(fields: [idAula], references: [id])
+
+}
+
+model Aula{
+  id Int @id @default(autoincrement())
+  //Datos
+  codigoAula String @unique
+  numeroAula Int
+  piso Int
+  turnoManana Boolean?
+  turnoTarde Boolean?
+  turnoNoche Boolean?
+
+  //Un aula puede tener varias materias
+  materiasMateria Materia[]
+  //Un aula puede tener varias usuarios
+  usuarios Usuario[]
 }

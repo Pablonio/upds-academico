@@ -8,6 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             nombre,
             apellidos,
             ci,
+            contrasena,
+            correo,
             fechaNacimiento,
             rol,
         } = req.body;
@@ -20,6 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     codigoUsuario,
                     nombre,
                     apellidos,
+                    correo,
+                    contrasena,
                     ci,
                     fechaNacimiento: new Date(fechaNacimiento),
                     rol: rol || 'Estudiante',
