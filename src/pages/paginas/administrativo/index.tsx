@@ -86,13 +86,31 @@ const Administracion: React.FC = () => {
             </button>
           </div>
         )}
+        <button 
+          className="ml-4 text-left pl-2 w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mt-4" 
+          onClick={() => handleMenuClick(activeComponent === 'materia' ? '' : 'materia')}
+        >
+          Materia
+        </button>
+
+        {activeComponent === 'materia' && (
+          <div className="pl-8">
+            <button 
+              className="block text-left pl-2 py-2 hover:bg-gray-700 bg-gray-800 rounded text-gray-300 mt-2"
+              onClick={() => handleMenuClick('crearMateria')}
+            >
+              Crear Materia
+            </button>
+          </div>
+        )}
       </nav>
 
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        {activeComponent === 'crearUsuarios' && <CrearUsuario />}
-        {activeComponent === 'crearCarrera' && <CrearCarrera />}
-        {activeComponent === 'crearProfesion' && <CrearProfesion />}
-        {activeComponent === 'crearSemestre' && <CrearSemestre />}
+        {activeComponent === 'crearUsuarios' && <CrearUsuario/>}
+        {activeComponent === 'crearCarrera' && <CrearCarrera/>}
+        {activeComponent === 'crearProfesion' && <CrearProfesion/>}
+        {activeComponent === 'crearSemestre' && <CrearSemestre/>}
+        {activeComponent === 'crearMateria' && <CrearMateriah/>}
       </div>
     </div>
   );
