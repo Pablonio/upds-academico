@@ -8,6 +8,81 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+model Carrera{
+  id Int @id @default(autoincrement())
+  //Datos
+  nombre String @unique
+  //Relacion con Usuario
+  idUsuario Int?
+  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+  //Una carrera puede tener varios Semestres
+  semestre Semestre[]
+}
+
+model Semestre{
+  id Int @id @default(autoincrement())
+  //Datos
+  nroSemestre Int
+  //Relacion con Carrera
+  idUsuario Int?
+  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+  //Relacion con Carrera
+  idCarrera Int?
+  carrera Carrera? @relation(fields: [idCarrera], references: [id])
+  //Un semestre puede tener varios Materias
+  materia Materia[]
+}
+
+model Profesion{
+  id Int @id @default(autoincrement())
+  //Datos
+  nombre String @unique
+  //Relacion con Usuario
+  idUsuario Int?
+  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+}
+
 model Usuario {
   id    Int     @id @default(autoincrement())
+  //Datos
+  codigoUsuario String @unique
+  nombre String
+  apellidos String
+  ci String
+  fechaNacimiento DateTime
+  rol String  @default("ESTUDIANTE")
+  //Un usuario puede tener varias profesiones
+  profesion Profesion[]
+  //Un usuario puede tener varias carreras
+  carrera Carrera[]
+  //Un usuario puede tener varias semestres
+  semestre Semestre[]
+  //Un usuario puede tener varias materias
+  materia Materia[]
+
+}
+
+model MateriasRequeridas{
+  id Int @id @default(autoincrement())
+  //Datos
+  nombre String
+  //Relacion con Materia
+  idMateria Int
+  materia Materia @relation(fields: [idMateria], references: [id])
+}
+
+
+model Materia{
+  id Int @id @default(autoincrement())
+  //Datos
+  codigoMateria String @unique
+  nombre String @unique
+  //Una materia puede requerir varias materias requeridas
+  materiasRequeridas MateriasRequeridas[]
+  //Relacion con Usuario
+  idUsuario Int?
+  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+  //Relacion con Semestre
+  idSemestre Int?
+  semestre Semestre? @relation(fields: [idSemestre], references: [id])
 }
