@@ -4,11 +4,7 @@ import { db } from "@/lib/lib";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
         try {
-            const profesiones = await db.profesion.findMany({
-                include: {
-                    usuario: true,
-                },
-            });
+            const profesiones = await db.profesion.findMany();        
             res.status(200).json(profesiones);
         } catch (error) {
             console.error('Fallo al recuperar profesiones: ', error);

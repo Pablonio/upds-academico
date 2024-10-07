@@ -8,8 +8,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 include: {
                     profesion: true,
                     carrera: true,
-                    semestre: true,
-                    materia: true,
                 },
             });
             res.status(200).json(usuarios);

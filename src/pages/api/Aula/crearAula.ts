@@ -3,7 +3,14 @@ import { db } from "@/lib/lib";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
-        const { codigoAula, numeroAula, piso, turnoManana, turnoTarde, turnoNoche } = req.body;
+        const{
+            codigoAula,
+            numeroAula,
+            piso,
+            turnoManana,
+            turnoTarde,
+            turnoNoche
+        }= req.body;
         try {
             const aula = await db.aula.create({
                 data: {
@@ -12,16 +19,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     piso,
                     turnoManana,
                     turnoTarde,
-                    turnoNoche,
-                },
+                    turnoNoche
+                }
             });
             res.status(201).json(aula);
         } catch (error) {
-            console.error("Fallo al registrar aula: ", error);
-            res.status(500).json({error: "Fallo al registrar aula", details: error instanceof Error ? error.message : "Error desconocido",});
+            console.error('Fallo al crear aula:',error);
+            res.status(500).json({error:'Fallo al crear aula', details:error instanceof Error? error.message: 'Error desconocido'});
         }
-    } else {
-        res.setHeader("Allow", ["POST"]);
+    } else{
+        res.setHeader('Allow', ['POST']);
         res.status(405).end(`Método ${req.method} no permitido`);
     }
 }

@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         backgroundImage: {
-          'hero-pattern': "url('/img/hero-pattern.svg')",
+          'hero-pattern': "url('/images/background')",
           'footer-texture': "url('/img/footer-texture.png')",
         }
       },

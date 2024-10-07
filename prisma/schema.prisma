@@ -13,8 +13,7 @@ model Carrera{
   //Datos
   nombre String @unique
   //Relacion con Usuario
-  idUsuario Int?
-  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+  usuario Usuario[]
   //Una carrera puede tener varios Semestres
   semestre Semestre[]
 }
@@ -23,9 +22,6 @@ model Semestre{
   id Int @id @default(autoincrement())
   //Datos
   nroSemestre Int
-  //Relacion con Carrera
-  idUsuario Int?
-  usuario Usuario? @relation(fields: [idUsuario], references: [id])
   //Relacion con Carrera
   idCarrera Int?
   carrera Carrera? @relation(fields: [idCarrera], references: [id])
@@ -38,8 +34,7 @@ model Profesion{
   //Datos
   nombre String @unique
   //Relacion con Usuario
-  idUsuario Int?
-  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+  usuario Usuario[]
 }
 
 model Usuario {
@@ -48,23 +43,21 @@ model Usuario {
   codigoUsuario String @unique
   nombre String
   apellidos String
-  ci String
-  correo String
+  ci String @unique
+  correo String @unique
   contrasena String
   fechaNacimiento DateTime
   rol String  @default("ESTUDIANTE")
   //Un usuario puede tener varias profesiones
-  profesion Profesion[]
+  idProfesion Int?
+  profesion Profesion? @relation(fields: [idProfesion], references: [id])
   //Un usuario puede tener varias carreras
-  carrera Carrera[]
-  //Un usuario puede tener varias semestres
-  semestre Semestre[]
+  idCarrera Int?
+  carrera Carrera? @relation(fields: [idCarrera], references: [id])
   //Un usuario puede tener varias materias
-  materia Materia[]
-  //Relacion con Aula
-  idAula Int? 
-  aula Aula? @relation(fields: [idAula], references: [id])
+  registroMateria RegistroMateria[]
 
+  solicitud Solicitud[]
 }
 
 model MateriasRequeridas{
@@ -76,26 +69,43 @@ model MateriasRequeridas{
   materia Materia @relation(fields: [idMateria], references: [id])
 }
 
+model RegistroMateria{
+  id Int @id @default(autoincrement())
+  //Datos
+  nombre String
+  //Relacion con Materia
+  idMateria Int
+  materia Materia @relation(fields: [idMateria], references: [id])
+  //Relacion con Aula
+  idAula Int
+  aula Aula @relation(fields: [idAula], references: [id])
+  //Relacion con Usuario
+  idUsuario Int
+  usuario Usuario @relation(fields: [idUsuario], references: [id])
+}
+
 
 model Materia{
   id Int @id @default(autoincrement())
   //Datos
   codigoMateria String @unique
   nombre String @unique
-  horaInMateria String
+  horaIngresoMateria String
   horaSalidaMateria String
+  fechaInicioMateria DateTime
+  fechaFinMateria DateTime
+
   //Una materia puede requerir varias materias requeridas
   materiasRequeridas MateriasRequeridas[]
   //Relacion con Usuario
-  idUsuario Int?
-  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+  registroMateria RegistroMateria[]
   //Relacion con Semestre
   idSemestre Int?
   semestre Semestre? @relation(fields: [idSemestre], references: [id])
   //Relacion con Aula
-  idAula Int? 
-  aula Aula? @relation(fields: [idAula], references: [id])
+  aula Aula[]
 
+  solicitud Solicitud[]
 }
 
 model Aula{
@@ -109,7 +119,18 @@ model Aula{
   turnoNoche Boolean?
 
   //Un aula puede tener varias materias
-  materiasMateria Materia[]
+  idMateria Int?
+  materia Materia? @relation(fields: [idMateria], references: [id])
   //Un aula puede tener varias usuarios
-  usuarios Usuario[]
+  registroMateria RegistroMateria[]
+}
+
+model Solicitud{
+  id Int @id @default(autoincrement())
+  idUsuario Int?
+  usuario Usuario? @relation(fields: [idUsuario], references: [id])
+  idMateria Int?
+  materia Materia? @relation(fields: [idMateria], references: [id])
+  estado Boolean
+  fecha DateTime @default(now())
 }
