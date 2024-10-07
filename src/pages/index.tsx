@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import LoginModal from "@/pages/paginas/Componentes/LoginModal"; // Asegúrate de importar el componente
-import Carreras from "@/pages/paginas/Componentes/Carreras"; // Importa tu componente de Carreras
-import Programaciones from "@/pages/paginas/Componentes/Programaciones"; // Importa tu componente de Programaciones
+import LoginModal from "@/pages/paginas/Componentes/LoginModal";
+import Carreras from "@/pages/paginas/Componentes/Carreras";
+import Programaciones from "@/pages/paginas/Componentes/Programaciones";
+import SolicitarMateria from "@/pages/paginas/estudiantes/Componentes/solicitarMateria"; // Importa el nuevo componente
 
 const HomePage = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [currentComponent, setCurrentComponent] = useState<JSX.Element | null>(null);
-  const [isMenuOpen, setMenuOpen] = useState(false); // Estado para controlar el menú
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   const handleNavClick = (component: JSX.Element) => {
     setCurrentComponent(component);
-    setMenuOpen(false); // Cierra el menú después de hacer clic en una opción
+    setMenuOpen(false);
   };
 
   return (
@@ -19,18 +20,15 @@ const HomePage = () => {
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-white text-2xl font-bold">Logo</h1>
 
-          {/* Botón del menú hamburguesa para móviles */}
           <button
             className="text-white sm:hidden block focus:outline-none"
             onClick={() => setMenuOpen(!isMenuOpen)}
           >
-            {/* Icono hamburguesa */}
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
           </button>
 
-          {/* Menú de navegación - Se oculta en móviles */}
           <ul className="hidden sm:flex space-x-4">
             <li>
               <button
@@ -58,6 +56,11 @@ const HomePage = () => {
               </button>
             </li>
             <li>
+              <button onClick={() => handleNavClick(<SolicitarMateria />)} className="text-white hover:text-gray-300">
+                Solicitar Materia
+              </button>
+            </li>
+            <li>
               <button onClick={() => setLoginOpen(true)} className="text-white hover:text-gray-300">
                 Iniciar Sesión
               </button>
@@ -65,7 +68,6 @@ const HomePage = () => {
           </ul>
         </div>
 
-        {/* Menú desplegable en móviles */}
         {isMenuOpen && (
           <ul className="sm:hidden mt-4 bg-gray-800 bg-opacity-90 p-4 rounded-lg space-y-4">
             <li>
@@ -91,6 +93,11 @@ const HomePage = () => {
             <li>
               <button onClick={() => handleNavClick(<Programaciones />)} className="block text-white hover:text-gray-300">
                 Programaciones
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavClick(<SolicitarMateria />)} className="block text-white hover:text-gray-300">
+                Solicitar Materia
               </button>
             </li>
             <li>

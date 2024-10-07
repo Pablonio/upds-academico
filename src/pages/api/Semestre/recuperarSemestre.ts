@@ -5,15 +5,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === "GET") {
         const { idCarrera } = req.query;
         try {
+            // Incluye la carrera al recuperar los semestres
             const semestres = await db.semestre.findMany({
-                where: {
-                    idCarrera: Number(idCarrera),
+                include: {
+                    carrera: true, // Incluye la relación con carrera
                 },
             });
             res.status(200).json(semestres);
         } catch (error) {
             console.error("Fallo al obtener semestres: ", error);
-            res.status(500).json({error: "Fallo al obtener semestres", details: error instanceof Error ? error.message : "Error desconocido",});
+            res.status(500).json({
+                error: "Fallo al obtener semestres",
+                details: error instanceof Error ? error.message : "Error desconocido",
+            });
         }
     } else {
         res.setHeader("Allow", ["GET"]);

@@ -6,82 +6,131 @@ import CrearSemestre from './componentes/crearSemestre';
 import CrearMateria from './componentes/crearMateria';
 
 const Administracion: React.FC = () => {
-  const [activeComponent, setActiveComponent] = useState<string>('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false); // Estado para el sidebar en móviles
+  const [activeComponent, setActiveComponent] = useState<string>("");
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false); // Estado para el sidebar en móviles
 
   const handleMenuClick = (component: string) => {
     setActiveComponent(component);
-    setIsSidebarOpen(false); // Cerrar el sidebar en móviles al seleccionar un componente
+    setSidebarOpen(false); // Cerrar sidebar después de hacer clic en móviles
   };
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Abrir o cerrar el sidebar
+    setSidebarOpen(!sidebarOpen); // Abrir o cerrar el sidebar en móviles
   };
 
   return (
     <div className="flex min-h-screen bg-black text-gray-100">
-      {/* Sidebar */}
-      <nav
-        className={`bg-gray-900 p-4 fixed lg:static lg:block lg:w-64 h-full z-50 transition-transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
-      >
-        <h1 className="text-2xl font-bold mb-4 text-center">Administración</h1>
-        <ul>
-          <li>
-            <button
-              className="w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mb-2"
-              onClick={() => handleMenuClick('crearUsuarios')}
-            >
-              Usuarios
-            </button>
-          </li>
-          <li>
-            <button
-              className="w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mb-2"
-              onClick={() => handleMenuClick('crearCarrera')}
-            >
-              Carrera
-            </button>
-          </li>
-          <li>
-            <button
-              className="w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mb-2"
-              onClick={() => handleMenuClick('crearProfesion')}
-            >
-              Profesión
-            </button>
-          </li>
-          <li>
-            <button
-              className="w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mb-2"
-              onClick={() => handleMenuClick('crearSemestre')}
-            >
-              Semestre
-            </button>
-          </li>
-          <li>
-            <button
-              className="w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mb-2"
-              onClick={() => handleMenuClick('crearMateria')}
-            >
-              Materia
-            </button>
-          </li>
-        </ul>
-      </nav>
-
-      {/* Botón para abrir/cerrar el menú en móviles */}
-      <div className="lg:hidden fixed bottom-4 right-4 z-50">
+      {/* Botón de menú para móviles */}
+      <div className="lg:hidden p-4 bg-gray-900 w-full flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Administración</h1>
         <button
           onClick={toggleSidebar}
-          className="text-gray-100 bg-gray-700 p-4 rounded-full shadow-lg focus:outline-none"
+          className="text-gray-100 bg-gray-700 p-2 rounded focus:outline-none"
         >
-          {isSidebarOpen ? 'Cerrar Menú' : 'Abrir Menú'}
+          {sidebarOpen ? 'Cerrar Menú' : 'Abrir Menú'}
         </button>
       </div>
 
-      <div className="flex-grow p-6 lg:ml-64">
+      {/* Sidebar */}
+      <nav
+        className={`bg-gray-900 p-4 min-h-screen w-64 fixed z-50 lg:static lg:block ${
+          sidebarOpen ? 'block' : 'hidden'
+        } lg:w-64 lg:block`}
+      >
+        <h1 className="text-2xl font-bold mb-4 text-center">Administración</h1>
+        <button 
+          className=" text-left pl-2 w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200" 
+          onClick={() => handleMenuClick(activeComponent === 'usuarios' ? '' : 'usuarios')}
+        >
+          Usuarios
+        </button>
+
+        {activeComponent === 'usuarios' && (
+          <div className="pl-8">
+            <button 
+              className="block text-left p-2 hover:bg-gray-700 bg-gray-800 rounded text-gray-300 mt-2"
+              onClick={() => handleMenuClick('crearUsuarios')}
+            >
+              Crear Usuario
+            </button>
+          </div>
+        )}
+
+        <button 
+          className="text-left w-full pl-2 py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mt-4" 
+          onClick={() => handleMenuClick(activeComponent === 'carrera' ? '' : 'carrera')}
+        >
+          Carrera
+        </button>
+
+        {activeComponent === 'carrera' && (
+          <div className="pl-8">
+            <button 
+              className="block text-left p-2 hover:bg-gray-700 bg-gray-800 rounded text-gray-300 mt-2"
+              onClick={() => handleMenuClick('crearCarrera')}
+            >
+              Crear Carrera
+            </button>
+          </div>
+        )}
+
+        <button 
+          className="text-left pl-2 w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mt-4" 
+          onClick={() => handleMenuClick(activeComponent === 'profesion' ? '' : 'profesion')}
+        >
+          Profesión
+        </button>
+
+        {activeComponent === 'profesion' && (
+          <div className="pl-8">
+            <button 
+              className="block text-left p-2 py-2 hover:bg-gray-700 bg-gray-800 rounded text-gray-300 mt-2"
+              onClick={() => handleMenuClick('crearProfesion')}
+            >
+              Crear Profesión
+            </button>
+          </div>
+        )}
+
+        <button 
+          className="text-left pl-2 w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mt-4" 
+          onClick={() => handleMenuClick(activeComponent === 'semestre' ? '' : 'semestre')}
+        >
+          Semestre
+        </button>
+
+        {activeComponent === 'semestre' && (
+          <div className="pl-8">
+            <button 
+              className="block text-left p-2 py-2 hover:bg-gray-700 bg-gray-800 rounded text-gray-300 mt-2"
+              onClick={() => handleMenuClick('crearSemestre')}
+            >
+              Crear Semestre
+            </button>
+          </div>
+        )}
+
+        <button 
+          className="text-left pl-2 w-full py-2 font-semibold bg-gray-800 hover:bg-gray-700 rounded-md text-gray-200 mt-4" 
+          onClick={() => handleMenuClick(activeComponent === 'materia' ? '' : 'materia')}
+        >
+          Materia
+        </button>
+
+        {activeComponent === 'materia' && (
+          <div className="pl-8">
+            <button 
+              className="block text-left p-2 py-2 hover:bg-gray-700 bg-gray-800 rounded text-gray-300 mt-2"
+              onClick={() => handleMenuClick('crearMateria')}
+            >
+              Crear Materia
+            </button>
+          </div>
+        )}
+      </nav>
+
+      {/* Contenido principal */}
+      <div className="flex flex-col items-center justify-center flex-grow p-6 lg:p-8">
         {activeComponent === 'crearUsuarios' && <CrearUsuario />}
         {activeComponent === 'crearCarrera' && <CrearCarrera />}
         {activeComponent === 'crearProfesion' && <CrearProfesion />}

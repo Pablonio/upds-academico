@@ -90,8 +90,6 @@ model Materia{
   //Datos
   codigoMateria String @unique
   nombre String @unique
-  horaIngresoMateria String
-  horaSalidaMateria String
   fechaInicioMateria DateTime
   fechaFinMateria DateTime
 
@@ -114,9 +112,12 @@ model Aula{
   codigoAula String @unique
   numeroAula Int
   piso Int
-  turnoManana Boolean?
-  turnoTarde Boolean?
-  turnoNoche Boolean?
+  idTurnoManana Int?
+  turnoManana TurnoManana? @relation(fields: [idTurnoManana], references: [id])
+  idTurnoTarde Int?
+  turnoTarde TurnoTarde? @relation(fields: [idTurnoTarde], references: [id])
+  idTurnoNoche Int?
+  turnoNoche TurnoNoche? @relation(fields: [idTurnoNoche], references: [id])
 
   //Un aula puede tener varias materias
   idMateria Int?
@@ -125,12 +126,30 @@ model Aula{
   registroMateria RegistroMateria[]
 }
 
+model TurnoManana{
+  id Int @id @default(autoincrement())
+  horaIngreso String @default("08:00 - 11:00")
+  aula Aula[]
+}
+
+model TurnoTarde{
+  id Int @id @default(autoincrement())
+  horaIngreso String @default("15:00 - 18:00")
+  aula Aula[]
+}
+
+model TurnoNoche{
+  id Int @id @default(autoincrement())
+  horaIngreso String @default("19:00 - 22:00")
+  aula Aula[]
+}
+
 model Solicitud{
   id Int @id @default(autoincrement())
   idUsuario Int?
   usuario Usuario? @relation(fields: [idUsuario], references: [id])
   idMateria Int?
   materia Materia? @relation(fields: [idMateria], references: [id])
-  estado Boolean
+  estado String
   fecha DateTime @default(now())
 }
