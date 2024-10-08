@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -39,7 +39,7 @@ const SolicitarMateria: React.FC = () => {
         }
     };
 
-    const fetchSolicitudes = async () => {
+    const fetchSolicitudes = useCallback(async () => {
         if (!userId) return;
         try {
             const res = await axios.post<Solicitud[]>('/api/Solicitud/recuperarSolicitud', { idUsuario: userId });
@@ -47,38 +47,38 @@ const SolicitarMateria: React.FC = () => {
         } catch (error) {
             console.error('Error fetching requests:', error);
         }
-    };
+    }, [userId]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
       
         if (!userId || !comprobante || selectedMateria === null || selectedMateriaSecundaria === null) {
-          setMensaje('Please select subjects and upload a file.');
-          return;
+            setMensaje('Please select subjects and upload a file.');
+            return;
         }
       
         try {
-          // Convert file to base64
-          const reader = new FileReader();
-          reader.readAsDataURL(comprobante);
-          reader.onload = async () => {
-            const base64String = reader.result as string;
-            
-            const data = {
-              comprobante: base64String,
-              idMateria: selectedMateria,
-              idMateriaSecundaria: selectedMateriaSecundaria,
-              idUsuario: userId,
-            };
+            // Convert file to base64
+            const reader = new FileReader();
+            reader.readAsDataURL(comprobante);
+            reader.onload = async () => {
+                const base64String = reader.result as string;
+                
+                const data = {
+                    comprobante: base64String,
+                    idMateria: selectedMateria,
+                    idMateriaSecundaria: selectedMateriaSecundaria,
+                    idUsuario: userId,
+                };
 
-            const response = await axios.post('/api/Solicitud/crearSolicitud', data);
-        
-            setMensaje('Request sent successfully');
-            fetchSolicitudes();
-          };
+                // Only assign the response if needed
+                await axios.post('/api/Solicitud/crearSolicitud', data);
+                setMensaje('Request sent successfully');
+                fetchSolicitudes();
+            };
         } catch (error) {
-          setMensaje('Error sending request');
-          console.error('Detailed error:', error);
+            setMensaje('Error sending request');
+            console.error('Detailed error:', error);
         }
     };
 

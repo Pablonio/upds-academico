@@ -5,6 +5,7 @@ interface Carrera {
   id: number;
   nombre: string;
 }
+
 export default function CrearSemestre() {
   const [nroSemestre, setNroSemestre] = useState<number | undefined>(undefined);
   const [idCarrera, setIdCarrera] = useState<number | undefined>(undefined);
@@ -33,11 +34,13 @@ export default function CrearSemestre() {
         idCarrera,
       });
       setMensaje(`Semestre creado con éxito: ${JSON.stringify(res.data)}`);
-    } catch (error: any) {
-      if (error.response) {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
         setMensaje(`Error: ${error.response.data.error}`);
-      } else {
+      } else if (error instanceof Error) {
         setMensaje(`Error inesperado: ${error.message}`);
+      } else {
+        setMensaje("Error inesperado.");
       }
     }
   };

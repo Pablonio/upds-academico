@@ -3,9 +3,7 @@ import { db } from "@/lib/lib";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "GET") {
-        const { idCarrera } = req.query;
         try {
-            // Incluye la carrera al recuperar los semestres
             const semestres = await db.semestre.findMany({
                 include: {
                     carrera: true, // Incluye la relación con carrera
@@ -24,3 +22,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(405).end(`Método ${req.method} no permitido`);
     }
 }
+

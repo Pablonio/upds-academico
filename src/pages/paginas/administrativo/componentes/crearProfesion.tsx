@@ -7,7 +7,7 @@ const CrearProfesion: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/Profesion/crearProfesion', { nombre });
+      await axios.post('/api/Profesion/crearProfesion', { nombre });
       alert('Profesion creada exitosamente');
       setNombre('');
     } catch (error) {
@@ -21,14 +21,14 @@ const CrearProfesion: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Crear Profesion</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-lg font-medium text-white">
+          <label className="block text-sm font-medium text-gray-700">
             Nombre de la Profesion:
             <input
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               required
-              className="mt-1 block w-full text-black pl-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 h-12"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </label>
         </div>
@@ -40,26 +40,6 @@ const CrearProfesion: React.FC = () => {
         </button>
       </form>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   );
 };
 

@@ -13,7 +13,7 @@ export const config = {
 
 const crearSolicitud = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { idMateria, idMateriaSecundaria, idUsuario, comprobante } = req.body;
+    const { idMateria, idUsuario, comprobante } = req.body;
 
     if (!comprobante) {
       return res.status(400).json({ error: 'No file uploaded' });

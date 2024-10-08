@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
+
+interface Semestre {
+  id: string;
+  nroSemestre: number;
+  carrera?: {
+    nombre: string;
+  };
+}
 
 export default function CreateMateria() {
     const [codigoMateria, setCodigoMateria] = useState("");
     const [nombre, setNombre] = useState("");
-    const [horaIngresoMateria, setHoraIngresoMateria] = useState("");
-    const [horaSalidaMateria, setHoraSalidaMateria] = useState("");
     const [fechaInicioMateria, setFechaInicioMateria] = useState("");
-    const [semestres, setSemestres] = useState([]);
+    const [semestres, setSemestres] = useState<Semestre[]>([]);
     const [idSemestre, setIdSemestre] = useState("");
-    const router = useRouter();
 
     useEffect(() => {
         const fetchSemestres = async () => {
@@ -37,7 +41,7 @@ export default function CreateMateria() {
                 fechaInicioMateria,
                 fechaFinMateria: fechaFin, // Fecha fin calculada
                 idSemestre,
-            });// Redireccionar después de crear
+            });
         } catch (error) {
             console.error("Error al crear materia", error);
         }
@@ -64,7 +68,6 @@ export default function CreateMateria() {
         while (diasHabiles < 20) {
             fecha.setDate(fecha.getDate() + 1);
             const diaSemana = fecha.getDay();
-            // Si es de lunes a viernes (1-5), se cuenta como día hábil
             if (diaSemana >= 1 && diaSemana <= 5) {
                 diasHabiles++;
             }
@@ -113,7 +116,7 @@ export default function CreateMateria() {
                     </tr>
                     </thead>
                     <tbody>
-                    {semestres.map((semestre: any) => (
+                    {semestres.map((semestre) => (
                         <tr key={semestre.id} className="bg-gray-600 hover:bg-gray-500">
                         <td className="py-2 text-center">{semestre.nroSemestre}</td>
                         <td className="py-2 text-center">{semestre.carrera?.nombre || "Sin Carrera"}</td>
@@ -144,7 +147,6 @@ export default function CreateMateria() {
                     />
                 </label>
                 </div>
-                {/* Eliminamos la entrada para Fecha de Fin */}
                 <button
                 type="submit"
                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"

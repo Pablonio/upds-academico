@@ -7,7 +7,7 @@ const CrearCarrera: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/Carrera/crearCarrera', { nombre });
+      await axios.post('/api/Carrera/crearCarrera', { nombre });
       alert('Carrera creada exitosamente');
       setNombre('');
     } catch (error) {
@@ -15,6 +15,7 @@ const CrearCarrera: React.FC = () => {
       alert('Error al crear carrera. Por favor, intenta de nuevo.');
     }
   };
+  
 
   return (
     <div className="container mx-auto p-4">
