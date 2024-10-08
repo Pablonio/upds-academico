@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/lib/lib";
+import bcrypt from "bcrypt";  // Importa bcrypt
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
@@ -13,17 +14,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             fechaNacimiento,
             rol,
         } = req.body;
+
+        // Verifica que los campos requeridos estén presentes
         if (!codigoUsuario || !nombre || !apellidos || !ci || !fechaNacimiento) {
             return res.status(400).json({ error: 'Todos los campos son requeridos excepto rol' });
         }
+
         try {
+            // Hashea la contraseña antes de guardarla en la base de datos
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(contrasena, saltRounds);  // Hashea la contraseña
+
+            // Crea el usuario en la base de datos con la contraseña hasheada
             const usuario = await db.usuario.create({
                 data: {
                     codigoUsuario,
                     nombre,
                     apellidos,
                     correo,
-                    contrasena,
+                    contrasena: hashedPassword,  // Guarda la contraseña hasheada
                     ci,
                     fechaNacimiento: new Date(fechaNacimiento),
                     rol: rol || 'Estudiante',

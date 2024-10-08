@@ -28,15 +28,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             });
 
             const data = await res.json();
+            console.log("Datos obtenidos:", data); // Verificar que el backend devuelve los datos correctamente
 
             if (res.ok) {
                 Cookies.set('rol', data.rol);
+                Cookies.set('userId', data.id);
                 if (data.rol === 'ADMINISTRATIVO') {
                     router.push('/paginas/administrativo');
                 } else if (data.rol === 'DOCENTE') {
                     router.push('/paginas/docentes');
                 } else if (data.rol === 'ESTUDIANTE') {
-                    router.push('/paginas/estudiantes');
+                    router.push('/');
                 }
             } else {
                 setError(data.error);

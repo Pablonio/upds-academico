@@ -1,31 +1,63 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '@/lib/lib';
+import { db } from "@/lib/lib";
+import fs from 'fs';
+import path from 'path';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'POST') {
-        res.setHeader('Allow', ['POST']);
-        return res.status(405).end(`Método ${req.method} no permitido`);
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
+const crearSolicitud = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === 'POST') {
+    const { idMateria, idMateriaSecundaria, idUsuario, comprobante } = req.body;
+
+    if (!comprobante) {
+      return res.status(400).json({ error: 'No file uploaded' });
     }
 
     try {
-        const { idMateria, idUsuario } = req.body;
+      // Parse the base64 string
+      const base64Data = comprobante.replace(/^data:image\/\w+;base64,/, "");
+      const buffer = Buffer.from(base64Data, 'base64');
 
-        if (!idMateria || !idUsuario) {
-            return res.status(400).json({ error: 'Se requieren los campos idMateria e idUsuario' });
-        }
+      // Generate a unique filename
+      const fileName = `${Date.now()}_comprobante.png`;
+      const filePath = path.join(process.cwd(), 'public', 'uploads', fileName);
+      
+      // Ensure the uploads directory exists
+      await fs.promises.mkdir(path.dirname(filePath), { recursive: true });
 
-        const nuevaSolicitud = await db.solicitud.create({
-            data: {
-                materia: { connect: { id: parseInt(idMateria as string) } },
-                usuario: { connect: { id: parseInt(idUsuario as string) } },
-                estado: 'PENDIENTE', // La solicitud siempre inicia como pendiente
-                fecha: new Date()
-            }
-        });
+      // Write the file
+      await fs.promises.writeFile(filePath, buffer);
 
-        res.status(201).json(nuevaSolicitud);
+      const fileUrl = `/uploads/${fileName}`;
+
+      const nuevaSolicitud = await db.solicitud.create({
+        data: {
+          comprobante: fileUrl,
+          estado: 'PENDIENTE',
+          usuario: {
+            connect: { id: parseInt(idUsuario) }
+          },
+          materia: {
+            connect: { id: parseInt(idMateria) }
+          },
+          fecha: new Date(),
+        },
+      });
+
+      return res.status(201).json(nuevaSolicitud);
     } catch (error) {
-        console.error('Error al crear la solicitud:', error);
-        res.status(500).json({ error: 'Error al crear la solicitud', details: error instanceof Error ? error.message : 'Error desconocido' });
+      console.error('Error creating request:', error);
+      return res.status(500).json({ error: 'Error creating request' });
     }
-}
+  } else {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+};
+
+export default crearSolicitud;

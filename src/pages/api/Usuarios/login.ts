@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
 
             // Si el inicio de sesión es exitoso, puedes devolver el rol
-            res.status(200).json({ rol: usuario.rol }); // Cambié 'Rol' a 'rol'
+            res.status(200).json({ rol: usuario.rol, id: usuario.id }); // Cambié 'Rol' a 'rol'
         } catch (error) {
             console.error('Fallo en el inicio de sesión: ', error);
             res.status(500).json({ error: 'Fallo en el inicio de sesión', details: error instanceof Error ? error.message : 'Error desconocido' });
