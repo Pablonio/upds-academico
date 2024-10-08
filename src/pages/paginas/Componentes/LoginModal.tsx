@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import {motion} from 'framer-motion';
 
 interface LoginModalProps {
     isOpen: boolean;
@@ -49,8 +50,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
     return (
         isOpen ? (
-          <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 w-full max-w-md">
+          <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center"
+          >
+            <div className="bg-slate-900 p-6 rounded-lg shadow-lg border border-slate-700 w-full max-w-md">
               <h2 className="text-2xl font-bold mb-4 text-gray-200">Iniciar Sesión</h2>
               {error && <div className="text-red-500 mb-2">{error}</div>}
               <form onSubmit={handleLogin}>
@@ -80,7 +87,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                 <div className="mt-6">
                   <button
                     type="submit"
-                    className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex text-center items-center justify-center w-full mb-6 pt-4 pr-10 pb-2 pl-10 text-base
+                    font-medium text-white bg-indigo-700 rounded-xl transition duration-500 ease-in-out transform
+                    hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Iniciar Sesión
                   </button>
@@ -88,12 +97,15 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               </form>
               <button
                 onClick={onClose}
-                className="mt-4 w-full px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="flex text-center items-center justify-center w-full pt-2 pr-10 pb-4 pl-10 text-base
+                    font-medium text-white bg-red-600 rounded-xl transition duration-500 ease-in-out transform
+                    hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
                 Cancelar
               </button>
             </div>
-          </div>
+          
+          </motion.div>
         ) : null
       );                       
 };
