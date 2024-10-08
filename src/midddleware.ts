@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
     INCOGNITO: ['/', '/paginas'],
     ADMINISTRATIVO: ['paginas/administativo', 'paginas/administrativo/componentes'],
     DOCENTE: ['/paginas/docentes', '/paginas/docentes/componentes'],
-    ESTUDIANTE: ['/paginas/estudiantes', '/paginas/estudiantes/componentes'],
+    ESTUDIANTE: ['/', '/paginas', '/paginas/estudiantes', '/paginas/estudiantes/componentes'],
     
     };
 
