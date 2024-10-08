@@ -84,7 +84,7 @@ const CrearUsuario = () => {
         idProfesion: parseInt(profesionId) || null
       };
 
-      const response = await axios.post('/api/Usuarios/crearUsuario', usuarioData);
+      await axios.post('/api/Usuarios/crearUsuario', usuarioData);
       alert('Usuario creado exitosamente');
       // Limpiar formulario
       setUsuario({
