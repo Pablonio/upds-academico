@@ -8,6 +8,7 @@ import CrearCarrera from './componentes/crearCarrera';
 import CrearProfesion from './componentes/crearProfesion';
 import CrearSemestre from './componentes/crearSemestre';
 import CrearMateria from './componentes/crearMateria';
+import PanelResultados from '../Componentes/PanelResultados';
 import Image from 'next/image';
 
 const Dashboard: React.FC = () => {
@@ -88,6 +89,14 @@ const Dashboard: React.FC = () => {
               Semestre  
             </button>
           </li>
+          <li className="w-4/5 my-2">
+            <button
+              className="p-4 w-full font-semibold bg-blue-950 hover:bg-slate-900 rounded-xl text-gray-200"
+              onClick={() => handleMenuClick('PanelResultados')}
+            >
+              Vista de Registros 
+            </button>
+          </li>
         </motion.ul>
       </nav>
     </aside>
@@ -109,6 +118,7 @@ const Dashboard: React.FC = () => {
           {activeComponent === 'crearProfesion' && <CrearProfesion />}
           {activeComponent === 'crearSemestre' && <CrearSemestre />}
           {activeComponent === 'crearMateria' && <CrearMateria />}
+          {activeComponent === 'PanelResultados' && <PanelResultados />}
         </div>
       </div>
     </div>
