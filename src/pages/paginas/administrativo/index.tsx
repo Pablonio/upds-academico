@@ -27,7 +27,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
     {/* Sidebar */}
-    <aside className="w-full md:w-1/4 bg-slate-800 text-gray-100 flex flex-col">
+    <aside className="w-full md:w-1/4 text-gray-100 flex flex-col  bg-[url('/images/fondo.jpg')] ">
       <div className="py-4 bg-slate-950 flex justify-between items-center px-6">
         <Image 
           src="/images/universidad.ico"
@@ -94,7 +94,7 @@ const Dashboard: React.FC = () => {
   
     {/* Main Content */}
     <div className="flex-1 p-6 bg-slate-900">
-      <header className="flex justify-between items-center bg-[url('/images/navbar.jpg')] py-2 m-0 hidden md:flex">
+      <header className="justify-between items-center bg-[url('/images/navbar.jpg')] py-2 m-0 hidden md:flex">
         <h2 className="text-2xl p-5 font-semibold">ADMINISTRACION</h2>
         <div>
           <a href="./dashboard">Perfil de usuario</a>
